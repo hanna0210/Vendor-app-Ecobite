@@ -21,7 +21,7 @@ class AppTheme {
       bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.white),
       // brightness: Brightness.light,
       // CUSTOMIZE showDatePicker Colors
-      dialogTheme: DialogTheme(backgroundColor: Colors.white),
+      dialogTheme: DialogThemeData(backgroundColor: Colors.white),
       buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
       highlightColor: Colors.grey[400],
       colorScheme: ColorScheme.light(

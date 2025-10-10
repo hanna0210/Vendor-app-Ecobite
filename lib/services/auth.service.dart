@@ -29,8 +29,11 @@ class AuthServices {
 
   //
   static bool authenticated() {
-    return LocalStorageService.prefs!.getBool(AppStrings.authenticated) ??
-        false;
+    final bool isAuthenticated = LocalStorageService.prefs!.getBool(AppStrings.authenticated) ?? false;
+    final String? token = LocalStorageService.prefs!.getString(AppStrings.userAuthToken);
+    
+    // User is only authenticated if the flag is true AND they have a valid token
+    return isAuthenticated && (token != null && token.isNotEmpty);
   }
 
   static Future<bool> isAuthenticated() {

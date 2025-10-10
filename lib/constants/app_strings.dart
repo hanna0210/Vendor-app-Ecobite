@@ -4,15 +4,15 @@ import 'package:fuodz/services/local_storage.service.dart';
 
 class AppStrings {
   //
-  static String get appName => env('app_name');
-  static String get companyName => env('company_name');
-  static String get googleMapApiKey => env('google_maps_key');
+  static String get appName => env('app_name') ?? "Fuodz";
+  static String get companyName => env('company_name') ?? "Fuodz";
+  static String get googleMapApiKey => env('google_maps_key') ?? "";
   static bool get enableChat => env('enableChat') == "1";
   static bool get partnersCanRegister =>
       ["1", 1].contains(env('partnersCanRegister'));
-  static String get countryCode => env('country_code');
-  static String get fcmApiKey => env('fcm_key');
-  static String get currencySymbol => env('currency');
+  static String get countryCode => env('country_code') ?? "US";
+  static String get fcmApiKey => env('fcm_key') ?? "";
+  static String get currencySymbol => env('currency') ?? "\$";
 
   //
   static String get otpGateway => env('otpGateway') ?? "none";

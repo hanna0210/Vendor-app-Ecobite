@@ -14,6 +14,9 @@ class AppRoutes {
   static const productDetailsRoute = "product";
   static const search = "search";
 
+  //Zero Waste
+  static const zeroWasteOffersRoute = "zero_waste_offers";
+
   //
   static const checkoutRoute = "checkout";
   static const orderDetailsRoute = "order_details";

@@ -5,7 +5,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuodz/constants/api.dart';
 import 'package:fuodz/constants/app_colors.dart';
-import 'package:fuodz/constants/app_page_settings.dart';
 import 'package:fuodz/constants/sizes.dart';
 import 'package:fuodz/models/address.dart';
 import 'package:fuodz/services/custom_form_builder_validator.service.dart';
@@ -15,7 +14,7 @@ import 'package:fuodz/view_models/register.view_model.dart';
 import 'package:fuodz/widgets/base.page.dart';
 import 'package:fuodz/widgets/buttons/custom_button.dart';
 import 'package:fuodz/widgets/buttons/image_picker.view.dart';
-import 'package:fuodz/widgets/cards/document_selection.view.dart';
+import 'package:fuodz/widgets/forms/vendor_application_form.dart';
 import 'package:fuodz/widgets/states/custom_loading.state.dart';
 
 import 'package:stacked/stacked.dart';
@@ -236,12 +235,28 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ).py20(),
 
-                      //business documents
-                      DocumentSelectionView(
-                        title: "Documents".tr(),
-                        instruction: AppPageSettings.vendorDocumentInstructions,
-                        max: AppPageSettings.maxVendorDocumentCount,
-                        onSelected: vm.onDocumentsSelected,
+                      //business documents - Enhanced UI
+                      UiSpacer.divider().py12(),
+                      "Verification Documents"
+                          .tr()
+                          .text
+                          .underline
+                          .xl
+                          .semiBold
+                          .make(),
+                      UiSpacer.vSpace(10),
+                      "Please upload required documents to verify your business and identity"
+                          .tr()
+                          .text
+                          .sm
+                          .gray600
+                          .make(),
+                      UiSpacer.vSpace(20),
+                      
+                      // Use the enhanced vendor application form
+                      VendorApplicationForm(
+                        onDocumentsChanged: vm.onCategorizedDocumentsChanged,
+                        initialDocuments: vm.categorizedDocuments,
                       ),
 
                       UiSpacer.divider().py12(),

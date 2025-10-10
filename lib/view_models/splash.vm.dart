@@ -52,12 +52,13 @@ class SplashViewModel extends MyBaseViewModel {
       await updateAppVariables(appGenSettings);
       //colors
       await updateAppTheme(appSettingsObject.body["colors"]);
-      loadNextPage();
     } catch (error) {
       setError(error);
       print("Error loading app settings ==> $error");
     }
     setBusy(false);
+    // Always load next page, even if settings fail
+    loadNextPage();
   }
 
   //
@@ -109,10 +110,20 @@ class SplashViewModel extends MyBaseViewModel {
         viewContext,
       ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
     } else {
-      await AuthServices.getCurrentUser(force: true);
-      Navigator.of(
-        viewContext,
-      ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route) => false);
+      // Validate that user data actually exists
+      try {
+        await AuthServices.getCurrentUser(force: true);
+        Navigator.of(
+          viewContext,
+        ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route) => false);
+      } catch (error) {
+        // User data is corrupted or missing, clear auth and go to login
+        print("Error loading user data: $error");
+        await AuthServices.logout();
+        Navigator.of(
+          viewContext,
+        ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+      }
     }
 
     //

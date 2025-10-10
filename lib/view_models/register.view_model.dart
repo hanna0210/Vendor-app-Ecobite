@@ -23,6 +23,7 @@ class RegisterViewModel extends MyBaseViewModel with QrcodeScannerTrait {
   TextEditingController addressTEC = new TextEditingController();
   List<VendorType> vendorTypes = [];
   List<File> selectedDocuments = [];
+  Map<String, File> categorizedDocuments = {};
   bool hidePassword = true;
   Country? selectedVendorCountry;
   Country? selectedCountry;
@@ -116,6 +117,13 @@ class RegisterViewModel extends MyBaseViewModel with QrcodeScannerTrait {
     notifyListeners();
   }
 
+  void onCategorizedDocumentsChanged(Map<String, File> documents) {
+    categorizedDocuments = documents;
+    // Also update selectedDocuments for backward compatibility
+    selectedDocuments = documents.values.toList();
+    notifyListeners();
+  }
+
   pickBusinessLogo() async {
     final selectedFile = await imagePicker.pickImage(
       source: ImageSource.gallery,
@@ -193,6 +201,7 @@ class RegisterViewModel extends MyBaseViewModel with QrcodeScannerTrait {
     passwordTEC.clear();
     addressTEC.clear();
     selectedDocuments = [];
+    categorizedDocuments = {};
     selectedVendorCountry = null;
     selectedCountry = null;
     selectedVendorTypeId = null;

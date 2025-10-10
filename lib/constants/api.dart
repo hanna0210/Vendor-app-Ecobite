@@ -4,7 +4,8 @@ import 'package:fuodz/services/auth.service.dart';
 
 class Api {
   static String get baseUrl {
-    return "https://fuodz.edentech.online/api";
+    return "https://tryecobite.com/api";
+    // return "https://fuodz.edentech.online/api";
     // return "http://192.168.8.145:8000/api";
   }
 
@@ -36,6 +37,9 @@ class Api {
   static const services = "/my/services";
   static const serviceDurations = "/service/durations";
   static const vendorTypes = "/vendor/types";
+
+  //Zero Waste
+  static const zeroWasteOffers = "/zero-waste/offers";
 
   //Payment accounts
   static const paymentAccount = "/payment/accounts";

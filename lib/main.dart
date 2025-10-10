@@ -37,7 +37,7 @@ void main() async {
         languagesList: AppLanguages.codes,
         assetsDirectory: 'assets/lang/',
       );
-
+      print("next---------");
       //
       await LocalStorageService.getPrefs();
       await NotificationService.clearIrrelevantNotificationChannels();

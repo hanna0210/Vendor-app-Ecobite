@@ -9,6 +9,7 @@ import 'package:fuodz/views/pages/finance/vendor_finance_report.page.dart';
 import 'package:fuodz/views/pages/profile/profile.page.dart';
 import 'package:fuodz/view_models/home.vm.dart';
 import 'package:fuodz/views/pages/vendor/vendor_details.page.dart';
+import 'package:fuodz/views/pages/zero_waste/zero_waste_offers.page.dart';
 import 'package:fuodz/widgets/base.page.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
                   OrdersPage(),
                   //
                   Utils.vendorSectionPage(model.currentVendor),
+                  ZeroWasteOffersPage(),
                   VendorDetailsPage(),
                   //
                   if (canViewReport)
@@ -90,6 +92,10 @@ class _HomePageState extends State<HomePage> {
                     GButton(
                       icon: Utils.vendorIconIndicator(model.currentVendor),
                       text: Utils.vendorTypeIndicator(model.currentVendor).tr(),
+                    ),
+                    GButton(
+                      icon: EvaIcons.heartOutline,
+                      text: 'Zero Waste'.tr(),
                     ),
                     GButton(
                       icon: EvaIcons.shoppingBagOutline,
