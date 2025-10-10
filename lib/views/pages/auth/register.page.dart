@@ -129,6 +129,13 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ).py20(),
 
+                      FormBuilderTextField(
+                        name: "referral_code",
+                        decoration: inputDec.copyWith(
+                          labelText: "Referral Code (Optional)".tr(),
+                        ),
+                      ),
+
                       //Business Information
                       UiSpacer.divider().py12(),
                       "Business Information"
