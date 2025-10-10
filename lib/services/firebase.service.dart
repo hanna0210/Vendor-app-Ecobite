@@ -37,8 +37,16 @@ class FirebaseService {
 
   setUpFirebaseMessaging() async {
     //Request for notification permission
-    /*NotificationSettings settings = */
-    await firebaseMessaging.requestPermission();
+    NotificationSettings settings = await firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    print("Notification permission status: ${settings.authorizationStatus}");
     //subscribing to all topic
     firebaseMessaging.subscribeToTopic("all");
 

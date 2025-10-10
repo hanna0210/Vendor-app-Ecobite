@@ -31,14 +31,13 @@ class NotificationService {
         ),
       ],
     );
-    //requet notifcation permission if not allowed
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        // Insert here your friendly dialog box before call the request method
-        // This is very important to not harm the user experience
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
+    //request notification permission if not allowed
+    bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowed) {
+      // Insert here your friendly dialog box before call the request method
+      // This is very important to not harm the user experience
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
   }
 
   static Future<void> clearIrrelevantNotificationChannels() async {
