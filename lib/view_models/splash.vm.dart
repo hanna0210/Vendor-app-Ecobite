@@ -86,45 +86,44 @@ class SplashViewModel extends MyBaseViewModel {
     //
     await Utils.setJiffyLocale();
     //
-    if (AuthServices.firstTimeOnApp()) {
-      //choose language
-      await Navigator.of(
-        viewContext,
-      ).push(MaterialPageRoute(builder: (ctx) => AppLanguageSelector()));
-      // await showModalBottomSheet(
-      //   context: viewContext,
-      //   isScrollControlled: true,
-      //   builder: (context) {
-      //     return AppLanguageSelector();
-      //   },
-      // );
-    }
+    // TEMPORARY: Bypass authentication to go directly to home page
+    print("⚠️ BYPASSING LOGIN - DEVELOPMENT MODE ⚠️");
+    Navigator.of(
+      viewContext,
+    ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route) => false);
 
-    //
-    if (AuthServices.firstTimeOnApp()) {
-      Navigator.of(
-        viewContext,
-      ).pushNamedAndRemoveUntil(AppRoutes.welcomeRoute, (route) => false);
-    } else if (!AuthServices.authenticated()) {
-      Navigator.of(
-        viewContext,
-      ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
-    } else {
-      // Validate that user data actually exists
-      try {
-        await AuthServices.getCurrentUser(force: true);
-        Navigator.of(
-          viewContext,
-        ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route) => false);
-      } catch (error) {
-        // User data is corrupted or missing, clear auth and go to login
-        print("Error loading user data: $error");
-        await AuthServices.logout();
-        Navigator.of(
-          viewContext,
-        ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
-      }
-    }
+    // ORIGINAL CODE (commented out for development):
+    // if (AuthServices.firstTimeOnApp()) {
+    //   //choose language
+    //   await Navigator.of(
+    //     viewContext,
+    //   ).push(MaterialPageRoute(builder: (ctx) => AppLanguageSelector()));
+    // }
+
+    // if (AuthServices.firstTimeOnApp()) {
+    //   Navigator.of(
+    //     viewContext,
+    //   ).pushNamedAndRemoveUntil(AppRoutes.welcomeRoute, (route) => false);
+    // } else if (!AuthServices.authenticated()) {
+    //   Navigator.of(
+    //     viewContext,
+    //   ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+    // } else {
+    //   // Validate that user data actually exists
+    //   try {
+    //     await AuthServices.getCurrentUser(force: true);
+    //     Navigator.of(
+    //       viewContext,
+    //     ).pushNamedAndRemoveUntil(AppRoutes.homeRoute, (route) => false);
+    //   } catch (error) {
+    //     // User data is corrupted or missing, clear auth and go to login
+    //     print("Error loading user data: $error");
+    //     await AuthServices.logout();
+    //     Navigator.of(
+    //       viewContext,
+    //     ).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+    //   }
+    // }
 
     //
     RemoteMessage? initialMessage =
