@@ -39,7 +39,7 @@ class Api {
   static const vendorTypes = "/vendor/types";
 
   //Zero Waste
-  static const zeroWasteOffers = "/zero-waste/offers";
+  static const zeroWasteOffers = "/my/food-rescues";
 
   //Payment accounts
   static const paymentAccount = "/payment/accounts";
