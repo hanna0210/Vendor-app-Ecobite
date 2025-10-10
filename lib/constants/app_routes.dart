@@ -4,6 +4,7 @@ class AppRoutes {
   static const editProfileRoute = "edit_profile";
   static const changePasswordRoute = "change_password";
   static const forgotPasswordRoute = "forgot_password";
+  static const vendorApplicationRoute = "vendor-application";
   static const homeRoute = "home";  
   static const notificationsRoute = "notificaitions";
   static const notificationDetailsRoute = "notificaition_details";

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fuodz/constants/app_routes.dart';
 import 'package:fuodz/extensions/string.dart';
 import 'package:fuodz/models/vendor_type.dart';
 import 'package:fuodz/requests/auth.request.dart';
@@ -122,6 +123,11 @@ class RegisterViewModel extends MyBaseViewModel with QrcodeScannerTrait {
     // Also update selectedDocuments for backward compatibility
     selectedDocuments = documents.values.toList();
     notifyListeners();
+  }
+
+  void openVendorApplicationPage() {
+    // Navigate to the vendor application page
+    Navigator.of(viewContext).pushNamed(AppRoutes.vendorApplicationRoute);
   }
 
   pickBusinessLogo() async {

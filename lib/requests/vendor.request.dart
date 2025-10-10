@@ -82,6 +82,29 @@ class VendorRequest extends HttpService {
     return ApiResponse.fromResponse(apiResult);
   }
 
+  Future<ApiResponse> submitVendorDocuments({
+    required List<File> documents,
+    required List<Map<String, dynamic>> metadata,
+  }) async {
+    FormData formData = FormData.fromMap({
+      'metadata': metadata,
+    });
+
+    // Add all document files
+    for (int i = 0; i < documents.length; i++) {
+      formData.files.add(
+        MapEntry("documents[]", await MultipartFile.fromFile(documents[i].path)),
+      );
+    }
+
+    final apiResult = await postCustomFiles(
+      Api.documentSubmission,
+      null,
+      formData: formData,
+    );
+    return ApiResponse.fromResponse(apiResult);
+  }
+
   Future<List<SaleReport>> getSalesReport({
     String? sDate,
     String? eDate,

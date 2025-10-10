@@ -6,6 +6,7 @@ import 'package:fuodz/models/notification.dart';
 import 'package:fuodz/models/product.dart';
 import 'package:fuodz/views/pages/auth/forgot_password.page.dart';
 import 'package:fuodz/views/pages/auth/login.page.dart';
+import 'package:fuodz/views/pages/auth/vendor_application.page.dart';
 import 'package:fuodz/views/pages/home.page.dart';
 import 'package:fuodz/views/pages/notification/notification_details.page.dart';
 import 'package:fuodz/views/pages/notification/notifications.page.dart';
@@ -25,6 +26,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case AppRoutes.forgotPasswordRoute:
       return MaterialPageRoute(builder: (context) => ForgotPasswordPage());
+
+    case AppRoutes.vendorApplicationRoute:
+      return MaterialPageRoute(
+        settings: RouteSettings(name: AppRoutes.vendorApplicationRoute),
+        builder: (context) => VendorApplicationPage(),
+      );
 
     case AppRoutes.homeRoute:
       return MaterialPageRoute(

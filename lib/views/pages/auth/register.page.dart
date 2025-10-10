@@ -5,6 +5,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuodz/constants/api.dart';
 import 'package:fuodz/constants/app_colors.dart';
+import 'package:fuodz/constants/app_page_settings.dart';
 import 'package:fuodz/constants/sizes.dart';
 import 'package:fuodz/models/address.dart';
 import 'package:fuodz/services/custom_form_builder_validator.service.dart';
@@ -14,7 +15,7 @@ import 'package:fuodz/view_models/register.view_model.dart';
 import 'package:fuodz/widgets/base.page.dart';
 import 'package:fuodz/widgets/buttons/custom_button.dart';
 import 'package:fuodz/widgets/buttons/image_picker.view.dart';
-import 'package:fuodz/widgets/forms/vendor_application_form.dart';
+import 'package:fuodz/widgets/cards/document_selection.view.dart';
 import 'package:fuodz/widgets/states/custom_loading.state.dart';
 
 import 'package:stacked/stacked.dart';
@@ -76,7 +77,60 @@ class RegisterPage extends StatelessWidget {
 
                     //form
                     VStack([
-                      //
+                      //Personal Information
+                      FormBuilderTextField(
+                        name: "name",
+                        validator: CustomFormBuilderValidator.required,
+                        decoration: inputDec.copyWith(labelText: "Name".tr()),
+                      ),
+
+                      FormBuilderTextField(
+                        name: "email",
+                        keyboardType: TextInputType.emailAddress,
+                        validator: CustomFormBuilderValidator.email,
+                        decoration: inputDec.copyWith(labelText: "Email".tr()),
+                      ).py20(),
+
+                      FormBuilderTextField(
+                        name: "phone",
+                        keyboardType: TextInputType.phone,
+                        validator: CustomFormBuilderValidator.required,
+                        decoration: inputDec.copyWith(
+                          labelText: "Phone".tr(),
+                          prefixIcon: HStack([
+                            //icon/flag
+                            Flag.fromString(
+                              vm.selectedCountry?.countryCode ?? "us",
+                              width: 20,
+                              height: 20,
+                            ),
+                            UiSpacer.horizontalSpace(space: 5),
+                            //text
+                            ("+" + (vm.selectedCountry?.phoneCode ?? "1")).text
+                                .make(),
+                          ]).px8().onInkTap(vm.showCountryDialPicker),
+                        ),
+                      ),
+
+                      FormBuilderTextField(
+                        name: "password",
+                        obscureText: vm.hidePassword,
+                        validator: CustomFormBuilderValidator.required,
+                        decoration: inputDec.copyWith(
+                          labelText: "Password".tr(),
+                          suffixIcon: Icon(
+                            vm.hidePassword
+                                ? FlutterIcons.ios_eye_ion
+                                : FlutterIcons.ios_eye_off_ion,
+                          ).onInkTap(() {
+                            vm.hidePassword = !vm.hidePassword;
+                            vm.notifyListeners();
+                          }),
+                        ),
+                      ).py20(),
+
+                      //Business Information
+                      UiSpacer.divider().py12(),
                       "Business Information"
                           .tr()
                           .text
@@ -89,7 +143,7 @@ class RegisterPage extends StatelessWidget {
                       FormBuilderTextField(
                         name: "vendor_name",
                         validator: CustomFormBuilderValidator.required,
-                        decoration: inputDec.copyWith(labelText: "Name".tr()),
+                        decoration: inputDec.copyWith(labelText: "Business Name".tr()),
                       ),
 
                       16.heightBox,
@@ -142,8 +196,8 @@ class RegisterPage extends StatelessWidget {
                                   color: AppColor.primaryColor,
                                 ),
                               ),
-                              hintText: "Address".tr(),
-                              labelText: "Address".tr(),
+                              hintText: "Business Address".tr(),
+                              labelText: "Business Address".tr(),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: AppColor.primaryColor,
@@ -208,7 +262,7 @@ class RegisterPage extends StatelessWidget {
                               CustomFormBuilderValidator.required(value),
                               CustomFormBuilderValidator.email(value),
                             ]),
-                        decoration: inputDec.copyWith(labelText: "Email".tr()),
+                        decoration: inputDec.copyWith(labelText: "Business Email".tr()),
                       ),
 
                       FormBuilderTextField(
@@ -216,7 +270,7 @@ class RegisterPage extends StatelessWidget {
                         keyboardType: TextInputType.phone,
                         validator: CustomFormBuilderValidator.required,
                         decoration: inputDec.copyWith(
-                          labelText: "Phone".tr(),
+                          labelText: "Business Phone".tr(),
                           prefixIcon: HStack([
                             //icon/flag
                             Flag.fromString(
@@ -235,90 +289,43 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ).py20(),
 
-                      //business documents - Enhanced UI
-                      UiSpacer.divider().py12(),
-                      "Verification Documents"
-                          .tr()
-                          .text
-                          .underline
-                          .xl
-                          .semiBold
-                          .make(),
-                      UiSpacer.vSpace(10),
-                      "Please upload required documents to verify your business and identity"
-                          .tr()
-                          .text
-                          .sm
-                          .gray600
-                          .make(),
-                      UiSpacer.vSpace(20),
-                      
-                      // Use the enhanced vendor application form
-                      VendorApplicationForm(
-                        onDocumentsChanged: vm.onCategorizedDocumentsChanged,
-                        initialDocuments: vm.categorizedDocuments,
-                      ),
+                      //business documents
+                      DocumentSelectionView(
+                        title: "Documents".tr(),
+                        instruction: AppPageSettings.vendorDocumentInstructions,
+                        max: AppPageSettings.maxVendorDocumentCount,
+                        onSelected: vm.onDocumentsSelected,
+                      ).py(12),
 
-                      UiSpacer.divider().py12(),
-                      "Personal Information"
-                          .tr()
-                          .text
-                          .underline
-                          .xl
-                          .semiBold
-                          .make(),
-                      UiSpacer.vSpace(30),
+                      // Link to detailed document upload page
+                      HStack([
+                        Icon(FlutterIcons.info_fea, size: 16, color: AppColor.primaryColor),
+                        UiSpacer.hSpace(8),
+                        "For detailed document verification,"
+                            .tr()
+                            .text
+                            .sm
+                            .make()
+                            .expand(),
+                        "Click here"
+                            .tr()
+                            .text
+                            .sm
+                            .semiBold
+                            .color(AppColor.primaryColor)
+                            .underline
+                            .make()
+                            .onInkTap(vm.openVendorApplicationPage),
+                      ])
+                          .p12()
+                          .box
+                          .roundedSM
+                          .border(color: AppColor.primaryColor.withOpacity(0.3))
+                          .color(AppColor.primaryColor.withOpacity(0.05))
+                          .make()
+                          .py8(),
 
-                      FormBuilderTextField(
-                        name: "name",
-                        validator: CustomFormBuilderValidator.required,
-                        decoration: inputDec.copyWith(labelText: "Name".tr()),
-                      ),
-
-                      FormBuilderTextField(
-                        name: "email",
-                        keyboardType: TextInputType.emailAddress,
-                        validator: CustomFormBuilderValidator.email,
-                        decoration: inputDec.copyWith(labelText: "Email".tr()),
-                      ).py20(),
-
-                      FormBuilderTextField(
-                        name: "phone",
-                        keyboardType: TextInputType.phone,
-                        validator: CustomFormBuilderValidator.required,
-                        decoration: inputDec.copyWith(
-                          labelText: "Phone".tr(),
-                          prefixIcon: HStack([
-                            //icon/flag
-                            Flag.fromString(
-                              vm.selectedCountry?.countryCode ?? "us",
-                              width: 20,
-                              height: 20,
-                            ),
-                            UiSpacer.horizontalSpace(space: 5),
-                            //text
-                            ("+" + (vm.selectedCountry?.phoneCode ?? "1")).text
-                                .make(),
-                          ]).px8().onInkTap(vm.showCountryDialPicker),
-                        ),
-                      ),
-
-                      FormBuilderTextField(
-                        name: "password",
-                        obscureText: vm.hidePassword,
-                        validator: CustomFormBuilderValidator.required,
-                        decoration: inputDec.copyWith(
-                          labelText: "Password".tr(),
-                          suffixIcon: Icon(
-                            vm.hidePassword
-                                ? FlutterIcons.ios_eye_ion
-                                : FlutterIcons.ios_eye_off_ion,
-                          ).onInkTap(() {
-                            vm.hidePassword = !vm.hidePassword;
-                            vm.notifyListeners();
-                          }),
-                        ),
-                      ).py20(),
+                      UiSpacer.divider(),
 
                       FormBuilderCheckbox(
                         name: "agreed",
